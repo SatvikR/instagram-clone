@@ -9,6 +9,11 @@
     "express": "^4.17.1",
     "mongoose": "^5.9.25"
   },
+  "scripts": {
+    "start": "node ./dist/app.js",
+    "dev": "nodemon ./src/app.ts",
+    "build": "tsc -p ."
+  },
   "devDependencies": {
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.7",
