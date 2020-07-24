@@ -2,6 +2,8 @@ import express, { Application } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose, { Connection } from "mongoose";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const app: Application = express();
 const port: number = Number(process.env.port) || 9000;
