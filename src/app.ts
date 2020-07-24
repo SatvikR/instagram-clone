@@ -2,8 +2,8 @@ import express, { Application } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose, { Connection } from "mongoose";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+
+import userRouter from "./routes/user";
 
 const app: Application = express();
 const port: number = Number(process.env.port) || 9000;
@@ -26,6 +26,8 @@ const connection: Connection = mongoose.connection;
 connection.once("open", () => {
   console.log("MongoDB connected");
 });
+
+app.use("/api/users", userRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
