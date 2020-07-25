@@ -3,7 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose, { Connection } from "mongoose";
 
-import userRouter from "./routes/user";
+import userRouter from "./routes/users";
+import postRouter from "./routes/posts";
 
 const app: Application = express();
 const port: number = Number(process.env.port) || 9000;
@@ -28,6 +29,7 @@ connection.once("open", () => {
 });
 
 app.use("/api/users", userRouter);
+app.use("/api/posts", postRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

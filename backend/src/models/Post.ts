@@ -4,6 +4,7 @@ import { IComment } from "./Comment";
 
 export interface IPost extends Document {
   owner: IUser["_id"];
+  title: string;
   image: string;
   likes: number;
   comments: IComment["_id"][];
@@ -12,6 +13,7 @@ export interface IPost extends Document {
 const PostSchema: Schema = new Schema(
   {
     owner: { type: mongoose.Types.ObjectId, ref: "User" },
+    title: { type: String, required: true },
     image: { type: String, required: true },
     likes: { type: Number, required: true },
     comments: [{ type: mongoose.Types.ObjectId, ref: "Comment" }],
