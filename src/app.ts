@@ -5,6 +5,7 @@ import mongoose, { Connection } from "mongoose";
 
 import userRouter from "./routes/users";
 import postRouter from "./routes/posts";
+import commentRouter from "./routes/comments";
 
 const app: Application = express();
 const port: number = Number(process.env.port) || 9000;
@@ -30,6 +31,7 @@ connection.once("open", () => {
 
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/comments", commentRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
