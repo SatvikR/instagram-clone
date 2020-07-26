@@ -75,4 +75,53 @@ router.route("/get/:id").get(verifyToken, (req: Request, res: Response) => {
     .catch((err: Error) => res.status(400).json(`Error: ${err}`));
 });
 
+router.route("/like/:id").post(verifyToken, (req: Request, res: Response) => {
+  Post.findById(req.params.id)
+    .then((post: IPost | null) => {
+      if (post) {
+        post.likes++;
+        post
+          .save()
+          .catch((err: Error) => res.status(400).json(`Error: ${err}`));
+        User.findById(req.body.uid)
+          .then((user: IUser | null) => {
+            if (user) {
+              user.liked.push(post._id);
+              user
+                .save()
+                .then(() => res.json("Post liked"))
+                .catch((err: Error) => res.status(400).json(`Error: ${err}`));
+            }
+          })
+          .catch((err: Error) => res.status(400).json(`Error: ${err}`));
+      }
+    })
+    .catch((err: Error) => res.status(400).json(`Error: ${err}`));
+});
+
+router
+  .route("/dislike/:id")
+  .post(verifyToken, (req: Request, res: Response) => {
+    Post.findById(req.params.id).then((post: IPost | null) => {
+      if (post) {
+        post.likes--;
+
+        post
+          .save()
+          .catch((err: Error) => res.status(400).json(`Error: ${err}`));
+
+        User.findById(req.body.uid).then((user: IUser | null) => {
+          if (user) {
+            user.liked.splice(user.liked.indexOf(post._id), 1);
+
+            user
+              .save()
+              .then(() => res.json("Post disliked"))
+              .catch((err: Error) => res.status(400).json(`Error: ${err}`));
+          }
+        });
+      }
+    });
+  });
+
 export default router;
