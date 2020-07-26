@@ -1,0 +1,14 @@
+{
+  "name": "instagram-clone",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/SatvikR/instagram-clone.git",
+  "author": "SatvikR <49799352+SatvikR@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently \"yarn --cwd ./frontend/ start\" \"yarn --cwd ./backend/ dev\""
+  },
+  "dependencies": {
+    "concurrently": "^5.2.0"
+  }
+}
