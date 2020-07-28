@@ -121,30 +121,31 @@ router.route("/get").get(verifyToken, (req: Request, res: Response) => {
     .catch((err: Error) => res.status(400).json(`Error: ${err}`));
 });
 
-router
-  .route("/login/:username&:password")
-  .get((req: Request, res: Response) => {
-    try {
-      User.find({ username: req.params.username })
-        .then(async (users: IUser[]) => {
-          if (users.length > 0) {
-            const user: IUser = users[0];
+router.route("/login").get((req: Request, res: Response) => {
+  const username: IUser["username"] = req.body.username;
+  const password: IUser["password"] = req.body.password;
 
-            if (await bcrypt.compare(req.params.password, user.password)) {
-              res.json({
-                accessToken: generateToken(user),
-              });
-            } else {
-              res.status(400).json("Password incorrect");
-            }
+  try {
+    User.find({ username: username })
+      .then(async (users: IUser[]) => {
+        if (users.length > 0) {
+          const user: IUser = users[0];
+
+          if (await bcrypt.compare(password, user.password)) {
+            res.json({
+              accessToken: generateToken(user),
+            });
           } else {
-            res.status(400).json("User not found");
+            res.status(400).json("Password incorrect");
           }
-        })
-        .catch((err: Error) => res.status(400).json(`Error: ${err}`));
-    } catch {
-      res.status(500).send();
-    }
-  });
+        } else {
+          res.status(400).json("User not found");
+        }
+      })
+      .catch((err: Error) => res.status(400).json(`Error: ${err}`));
+  } catch {
+    res.status(500).send();
+  }
+});
 
 export default router;
