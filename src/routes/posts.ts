@@ -64,6 +64,16 @@ router.route("/").get(verifyToken, (req: Request, res: Response) => {
 });
 
 router.route("/:id").delete(verifyToken, (req: Request, res: Response) => {
+  User.findById(req.body.uid)
+    .then((user: IUser | null) => {
+      if (user) {
+        user.posts.splice(user.posts.indexOf(req.params.id), 1);
+        user
+          .save()
+          .catch((err: Error) => res.status(400).json(`Error: ${err}`));
+      }
+    })
+    .catch((err: Error) => res.status(400).json(`Error: ${err}`));
   Post.findByIdAndDelete(req.params.id)
     .then(() => res.json("Post deleted"))
     .catch((err: Error) => res.status(400).json(`Error: ${err}`));
