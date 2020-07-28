@@ -101,8 +101,8 @@ router
       .catch((err: Error) => res.status(400).json(`Error: ${err}`));
   });
 
-router.route("/followers").get(verifyToken, (req: Request, res: Response) => {
-  Follow.find({ user: req.body.uid })
+router.route("/followers/:id").get((req: Request, res: Response) => {
+  Follow.find({ user: req.params.id })
     .then((follows: IFollow[]) => {
       if (follows.length > 0) {
         res.json(follows[0]);
