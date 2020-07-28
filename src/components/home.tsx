@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Header, Icon } from "semantic-ui-react";
+import { api } from "../api";
 
 interface IComment {
   owner: string;
@@ -14,15 +15,19 @@ interface IProps {
   likes: number;
 }
 
-//eslint-disable-nextline
-const Post: React.FC<IProps> = ({ title, owner, _id, image, likes }) => {};
+// const Post: React.FC<IProps> = ({ title, owner, _id, image, likes }) => {};
 
 const Home: React.FC = () => {
+  const createPosts = () => {
+    api.get("/posts/all").then((res) => console.log(res.data));
+  };
+
   return (
     <Container text>
       <Header as="h1" textAlign="center">
         <Icon name="image" /> Instagram Demo
       </Header>
+      {createPosts()}
     </Container>
   );
 };
