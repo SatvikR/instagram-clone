@@ -27,12 +27,6 @@ const CreatePost: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (progress >= 100) {
-      window.location.pathname = "/";
-    }
-  });
-
   const handleFileInput = (
     e: React.ChangeEvent<HTMLInputElement>,
     data: InputOnChangeData
@@ -128,10 +122,12 @@ const CreatePost: React.FC = () => {
               .getDownloadURL()
               .then((url) => {
                 console.log(url);
-                api.post("/posts/edit/" + post_id, {
-                  title: title,
-                  image: url,
-                });
+                api
+                  .post("/posts/edit/" + post_id, {
+                    title: title,
+                    image: url,
+                  })
+                  .then((_res) => (window.location.pathname = "/"));
               });
           }
         );
