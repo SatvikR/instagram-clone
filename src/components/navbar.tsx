@@ -7,7 +7,7 @@ const Navbar: React.FC = () => {
   const [activeItem, setActiveItem] = useState<string>("home");
 
   return (
-    <Menu tabular color="violet">
+    <Menu pointing secondary color="teal">
       <Menu.Item
         as={Link}
         to="/"
