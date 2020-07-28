@@ -58,7 +58,7 @@ const Home: React.FC = () => {
     return nameMap;
   };
 
-  const createPosts = () => {
+  const createPosts = React.useCallback(() => {
     api.get("/posts/all").then(async (res) => {
       const currPosts = res.data;
       currPosts.reverse();
@@ -78,7 +78,7 @@ const Home: React.FC = () => {
         })
       );
     });
-  };
+  }, []);
 
   React.useEffect(() => {
     createPosts();
