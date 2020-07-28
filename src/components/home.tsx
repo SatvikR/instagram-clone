@@ -1,6 +1,14 @@
-import React, { useState } from "react";
-import { Container, Header, Icon, Image, Segment } from "semantic-ui-react";
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  Header,
+  Icon,
+  Image,
+  Segment,
+  Button,
+} from "semantic-ui-react";
 import { api } from "../api";
+import { cookies } from "../cookies";
 
 interface IComment {
   owner: string;
@@ -24,6 +32,33 @@ const Post: React.FC<IProps> = ({
   likes,
   username,
 }) => {
+  const [liked, setLiked] = useState<boolean>(false);
+  const [currLikes, setCurrLikes] = useState<number>(likes);
+
+  useEffect(() => {
+    if (cookies.get("token")) {
+      api.get("/users/get").then((res) => {
+        setLiked(res.data.liked.includes(_id));
+      });
+    }
+  }, []);
+
+  const handleLike = () => {
+    if (cookies.get("token")) {
+      if (liked) {
+        api.post("/posts/dislike/" + _id);
+        setLiked(false);
+        setCurrLikes(currLikes - 1);
+      } else {
+        api.post("/posts/like/" + _id);
+        setLiked(true);
+        setCurrLikes(currLikes + 1);
+      }
+    } else {
+      window.location.pathname = "/login";
+    }
+  };
+
   React.useEffect(() => {
     console.log(username);
   }, [username]);
@@ -36,10 +71,28 @@ const Post: React.FC<IProps> = ({
       <Header as="h4" dividing>
         Posted by: {username}
       </Header>
-      <Header as="h4">
-        <Icon name="thumbs up" />
-        {likes}
-      </Header>
+      <Button
+        color="green"
+        content="Likes"
+        icon={liked ? "check" : "thumbs up"}
+        label={{
+          basic: true,
+          color: "green",
+          pointing: "left",
+          content: currLikes,
+        }}
+        onClick={handleLike}
+      />
+      <Button
+        color="orange"
+        content="Followers"
+        label={{
+          basic: true,
+          color: "orange",
+          pointing: "left",
+          content: 10,
+        }}
+      />
     </Segment>
   );
 };
@@ -64,7 +117,8 @@ const Home: React.FC = () => {
       currPosts.reverse();
       const nameMap = await getUsernames(currPosts);
       setPosts(
-        currPosts.map((post: any) => {
+        currPosts.map((post: any, i: number) => {
+          console.log(post.likes);
           return (
             <Post
               title={post.title}
@@ -73,6 +127,7 @@ const Home: React.FC = () => {
               image={post.image}
               likes={post.likes}
               username={nameMap.get(post.owner)}
+              key={i}
             />
           );
         })
@@ -89,7 +144,11 @@ const Home: React.FC = () => {
       <Header as="h1" textAlign="center">
         <Icon name="image" /> Instagram Demo
       </Header>
-      {posts || "loading"}
+      {posts || (
+        <Segment loading>
+          <Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
+        </Segment>
+      )}
     </Container>
   );
 };

@@ -16,7 +16,7 @@ import { cookies } from "../cookies";
 
 const CreatePost: React.FC = () => {
   const [src, setSrc] = useState<string | ArrayBuffer | null>(null);
-  const [crop, setCrop] = useState<ReactCrop.Crop>({ aspect: 1 / 1 });
+  const [crop, setCrop] = useState<ReactCrop.Crop>({});
   const [image, setImage] = useState<HTMLImageElement | null>();
   const [progress, setProgress] = useState<number>(0);
   const [title, setTitle] = useState<string>("");
