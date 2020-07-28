@@ -82,7 +82,7 @@ const Home: React.FC = () => {
 
   React.useEffect(() => {
     createPosts();
-  }, []);
+  }, [createPosts]);
 
   return (
     <Container text textAlign="center">
