@@ -27,6 +27,12 @@ const CreatePost: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (progress >= 100) {
+      window.location.pathname = "/";
+    }
+  });
+
   const handleFileInput = (
     e: React.ChangeEvent<HTMLInputElement>,
     data: InputOnChangeData
