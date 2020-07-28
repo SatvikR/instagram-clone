@@ -113,6 +113,18 @@ router.route("/followers").get(verifyToken, (req: Request, res: Response) => {
     .catch((err: Error) => res.status(400).json(`Error: ${err}`));
 });
 
+router.route("/name/:id").get((req: Request, res: Response) => {
+  User.findById(req.params.id)
+    .then((user: IUser | null) => {
+      if (user) {
+        res.json({ username: user.username });
+      } else {
+        res.status(404).json("User not found");
+      }
+    })
+    .catch((err: Error) => res.status(400).json(`Error: ${err}`));
+});
+
 router.route("/get").get(verifyToken, (req: Request, res: Response) => {
   User.findById(req.body.uid)
     .then((user: IUser | null) => {
