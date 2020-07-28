@@ -36,8 +36,9 @@ const Login: React.FC = () => {
 
   const handleSubmit = () => {
     api
-      .get("/users/login/", {
-        data: { username: username, password: password },
+      .post("/users/login", {
+        username: username,
+        password: password,
       })
       .then((res) => {
         cookies.set("token", res.data.accessToken);
