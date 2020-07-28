@@ -45,7 +45,7 @@ router.route("/edit/:id").post(verifyToken, (req: Request, res: Response) => {
     .catch((err: Error) => res.status(400).json(`Error: ${err}`));
 });
 
-router.route("/all").get(verifyToken, (req: Request, res: Response) => {
+router.route("/all").get((req: Request, res: Response) => {
   Post.find().then((posts: IPost[]) => res.json(posts));
 });
 
