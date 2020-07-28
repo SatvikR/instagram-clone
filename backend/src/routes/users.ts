@@ -121,7 +121,7 @@ router.route("/get").get(verifyToken, (req: Request, res: Response) => {
     .catch((err: Error) => res.status(400).json(`Error: ${err}`));
 });
 
-router.route("/login").get((req: Request, res: Response) => {
+router.route("/login").post((req: Request, res: Response) => {
   const username: IUser["username"] = req.body.username;
   const password: IUser["password"] = req.body.password;
 
