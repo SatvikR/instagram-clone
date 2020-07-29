@@ -34,14 +34,20 @@ const Post: React.FC<IProps> = ({
 }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const [currLikes, setCurrLikes] = useState<number>(likes);
+  const [followers, setFollowers] = useState<number>(0);
+  const [following, setFollowing] = useState<boolean>(false);
 
   useEffect(() => {
     if (cookies.get("token")) {
       api.get("/users/get").then((res) => {
         setLiked(res.data.liked.includes(_id));
+        setFollowing(res.data.following.includes(owner));
       });
     }
-  }, []);
+    api
+      .get("/users/followers/" + owner)
+      .then((res) => setFollowers(res.data.followers));
+  }, [_id, owner]);
 
   const handleLike = () => {
     if (cookies.get("token")) {
@@ -53,6 +59,22 @@ const Post: React.FC<IProps> = ({
         api.post("/posts/like/" + _id);
         setLiked(true);
         setCurrLikes(currLikes + 1);
+      }
+    } else {
+      window.location.pathname = "/login";
+    }
+  };
+
+  const handleFollow = () => {
+    if (cookies.get("token")) {
+      if (following) {
+        api.post("/users/unfollow/" + owner);
+        setFollowing(false);
+        setFollowers(followers - 1);
+      } else {
+        api.post("/users/follow/" + owner);
+        setFollowing(true);
+        setFollowers(followers + 1);
       }
     } else {
       window.location.pathname = "/login";
@@ -86,13 +108,17 @@ const Post: React.FC<IProps> = ({
       <Button
         color="orange"
         content="Followers"
+        icon={following ? "check" : null}
         label={{
           basic: true,
           color: "orange",
           pointing: "left",
-          content: 10,
+          content: followers || "...",
         }}
+        onClick={handleFollow}
       />
+      <Button color="blue" content="Show Comments" icon="comment outline" />
+      <Button color="blue" content="Add a Comment" icon="plus" />
     </Segment>
   );
 };

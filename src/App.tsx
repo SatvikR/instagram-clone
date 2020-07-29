@@ -8,8 +8,6 @@ import Signup from "./components/signup";
 import Account from "./components/account";
 import Following from "./components/following";
 import CreatePost from "./components/create-post";
-import EditPost from "./components/edit-post";
-import Comment from "./components/comment";
 import Navbar from "./components/navbar";
 
 function App() {
@@ -22,8 +20,6 @@ function App() {
       <Route path="/account" exact component={Account} />
       <Route path="/following" exact component={Following} />
       <Route path="/create-post" exact component={CreatePost} />
-      <Route path="/edit-post/:id" exact component={EditPost} />
-      <Route path="/comment/:id" exact component={Comment} />
     </Router>
   );
 }
