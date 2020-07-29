@@ -6,6 +6,9 @@ import {
   Image,
   Segment,
   Button,
+  List,
+  Form,
+  Input,
 } from "semantic-ui-react";
 import { api } from "../api";
 import { cookies } from "../cookies";
@@ -14,6 +17,18 @@ interface IComment {
   owner: string;
   text: string;
 }
+
+const Comment: React.FC<IComment> = ({ owner, text }) => {
+  return (
+    <List.Content>
+      <List.Header as="h3" floated="left">
+        <Icon name="comment outline" /> {owner}
+      </List.Header>
+      <p style={{ fontSize: "2vh" }}>{text}</p>
+      <br />
+    </List.Content>
+  );
+};
 
 interface IProps {
   title: string;
@@ -36,6 +51,43 @@ const Post: React.FC<IProps> = ({
   const [currLikes, setCurrLikes] = useState<number>(likes);
   const [followers, setFollowers] = useState<number>(0);
   const [following, setFollowing] = useState<boolean>(false);
+  const [comments, setComments] = useState<any[] | null>();
+  const [showingComments, setShowingComments] = useState<boolean>(false);
+  const [showingInput, setShowingInput] = useState<boolean>(false);
+  const [commentText, setCommentText] = useState<string>("");
+
+  const getUsernames = async (posts: any) => {
+    const nameMap = new Map();
+    for (const post of posts) {
+      const res = await api.get("/users/name/" + post.owner);
+      const owner = post.owner;
+      nameMap.set(owner, res.data.username);
+    }
+    return nameMap;
+  };
+
+  const getComments = React.useCallback(() => {
+    api.get("/comments/get/" + _id).then(async (res) => {
+      const currComments = res.data;
+      currComments.reverse();
+      const nameMap = await getUsernames(currComments);
+      setComments(
+        currComments.map((comment: any, index: number) => {
+          return (
+            <Comment
+              owner={nameMap.get(comment.owner)}
+              text={comment.text}
+              key={index}
+            />
+          );
+        })
+      );
+    });
+  }, [_id]);
+
+  useEffect(() => {
+    getComments();
+  }, [getComments]);
 
   useEffect(() => {
     if (cookies.get("token")) {
@@ -81,9 +133,35 @@ const Post: React.FC<IProps> = ({
     }
   };
 
+  const handleAddComment = () => {
+    if (!cookies.get("token")) {
+      window.location.pathname = "/login";
+    }
+    setShowingInput(!showingInput);
+  };
+
+  const handleSubmitComment = () => {
+    api.post("/comments/add", {
+      post: _id,
+      text: commentText,
+    });
+    api.get("/users/get").then((res) => {
+      if (comments) {
+        setComments([
+          <Comment owner={res.data.username} text={commentText} />,
+          ...comments,
+        ]);
+      }
+      setShowingInput(false);
+      setCommentText("");
+      setShowingComments(true);
+    });
+  };
+
   React.useEffect(() => {
     console.log(username);
   }, [username]);
+
   return (
     <Segment raised>
       <Header as="h3" dividing>
@@ -117,8 +195,50 @@ const Post: React.FC<IProps> = ({
         }}
         onClick={handleFollow}
       />
-      <Button color="blue" content="Show Comments" icon="comment outline" />
-      <Button color="blue" content="Add a Comment" icon="plus" />
+      <Button
+        color="blue"
+        content="Show Comments"
+        icon="comment outline"
+        onClick={() => setShowingComments(!showingComments)}
+      />
+      <Button
+        color="blue"
+        content="Add a Comment"
+        icon="plus"
+        onClick={handleAddComment}
+      />
+      {showingInput && (
+        <Form onSubmit={handleSubmitComment}>
+          <br />
+          <Form.Field>
+            <Input
+              placeholder="Comment goes here..."
+              label="Comment: "
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Button
+              color="teal"
+              content="Post Comment"
+              icon="comment outline"
+              type="submit"
+            />
+          </Form.Field>
+        </Form>
+      )}
+      {showingComments && (
+        <div style={{ textAlign: "left" }}>
+          <br />
+          <Header as="h3" dividing>
+            Comments:
+          </Header>
+          <List divided relaxed>
+            {comments || "Loading"}
+          </List>
+        </div>
+      )}
     </Segment>
   );
 };
@@ -132,7 +252,6 @@ const Home: React.FC = () => {
       const res = await api.get("/users/name/" + post.owner);
       const owner = post.owner;
       nameMap.set(owner, res.data.username);
-      console.log(nameMap.get(owner));
     }
     return nameMap;
   };
