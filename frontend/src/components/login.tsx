@@ -17,6 +17,7 @@ const Login: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [currUser, setCurrUser] = useState<string | null>();
+  const [failedLogin, setFailedLogin] = useState<boolean>(false);
 
   useEffect(() => {
     if (cookies.get("token")) {
@@ -28,10 +29,12 @@ const Login: React.FC = () => {
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
+    setFailedLogin(false);
   };
 
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
+    setFailedLogin(false);
   };
 
   const handleSubmit = () => {
@@ -42,9 +45,9 @@ const Login: React.FC = () => {
       })
       .then((res) => {
         cookies.set("token", res.data.accessToken);
-        window.location.pathname = "/following";
+        window.location.pathname = "/";
       })
-      .catch((err) => console.log(err));
+      .catch((_err) => setFailedLogin(true));
   };
 
   const handleLogout = () => {
@@ -83,6 +86,12 @@ const Login: React.FC = () => {
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
+          {failedLogin && (
+            <Message negative>
+              <Message.Header>Login Failed</Message.Header>
+              <p>Either your Username of password was incorrect</p>
+            </Message>
+          )}
           <Header as="h2" textAlign="center">
             <Icon name="sign-in" /> Login to your account
           </Header>
