@@ -27,4 +27,12 @@ router.route("/add").post(verifyToken, (req: Request, res: Response) => {
     .catch((err: Error) => res.status(400).json(`Error: ${err}`));
 });
 
+router.route("/get/:id").get((req: Request, res: Response) => {
+  Comment.find({ post: req.params.id })
+    .then((comments: IComment[]) => {
+      res.json(comments);
+    })
+    .catch((err: Error) => res.status(400).json(`Error: ${err}`));
+});
+
 export default router;
