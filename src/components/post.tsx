@@ -173,7 +173,7 @@ export const Post: React.FC<IProps> = ({
           basic: true,
           color: "orange",
           pointing: "left",
-          content: followers || "...",
+          content: followers,
         }}
         onClick={handleFollow}
       />
