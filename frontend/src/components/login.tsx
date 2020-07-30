@@ -10,8 +10,8 @@ import {
   Loader,
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import { cookies } from "../cookies";
-import { api } from "../api";
+import { cookies } from "./shared/cookies";
+import { api } from "./shared/api";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState<string>("");

@@ -10,9 +10,9 @@ import {
 } from "semantic-ui-react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { storage } from "../firebase";
-import { api } from "../api";
-import { cookies } from "../cookies";
+import { storage } from "./firebase/firebase";
+import { api } from "./shared/api";
+import { cookies } from "./shared/cookies";
 
 const CreatePost: React.FC = () => {
   const [src, setSrc] = useState<string | ArrayBuffer | null>(null);
