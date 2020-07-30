@@ -47,7 +47,7 @@ const Home: React.FC = () => {
   return (
     <Container text textAlign="center">
       <Header as="h1" textAlign="center">
-        <Icon name="image" /> Instagram Demo
+        <Icon name="instagram" /> Instagram Demo
       </Header>
       {posts || (
         <Segment loading>
