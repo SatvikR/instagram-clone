@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Container, Segment, Image, Header } from "semantic-ui-react";
-import { cookies } from "../cookies";
-import { api } from "../api";
-import { Info } from "./info";
-import { UserPost } from "./user-post";
+import { cookies } from "./shared/cookies";
+import { api } from "./shared/api";
+import { Info } from "./account/info";
+import { UserPost } from "./account/user-post";
 
 const Account: React.FC = () => {
   const [info, setInfo] = useState<any | null>();

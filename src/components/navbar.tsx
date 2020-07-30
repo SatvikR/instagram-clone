@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import { cookies } from "../cookies";
+import { cookies } from "./shared/cookies";
 
 const Navbar: React.FC = () => {
   const [activeItem, setActiveItem] = useState<string>("home");

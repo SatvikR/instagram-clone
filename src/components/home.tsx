@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Header, Icon, Image, Segment } from "semantic-ui-react";
-import { api } from "../api";
-import { Post } from "./post";
+import { api } from "./shared/api";
+import { Post } from "./shared/post";
 
 const Home: React.FC = () => {
   const [posts, setPosts] = useState<any[] | null>();

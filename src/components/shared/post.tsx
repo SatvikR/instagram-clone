@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { api } from "../api";
-import { cookies } from "../cookies";
+import { api } from "./api";
+import { cookies } from "./cookies";
 import {
   Segment,
   Header,
@@ -10,7 +10,7 @@ import {
   List,
   Image,
 } from "semantic-ui-react";
-import { Comment } from "./comment";
+import { Comment } from "./post/comment";
 
 interface IProps {
   title: string;

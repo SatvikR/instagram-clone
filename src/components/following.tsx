@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { cookies } from "../cookies";
-import { api } from "../api";
-import { Post } from "./post";
+import { cookies } from "./shared/cookies";
+import { api } from "./shared/api";
+import { Post } from "./shared/post";
 import { Container, Header, Icon, Segment, Image } from "semantic-ui-react";
 
 const Following: React.FC = () => {

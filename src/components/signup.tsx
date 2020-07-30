@@ -9,8 +9,8 @@ import {
   Message,
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import { api } from "../api";
-import { cookies } from "../cookies";
+import { api } from "./shared/api";
+import { cookies } from "./shared/cookies";
 
 const Signup: React.FC = () => {
   const [username, setUsername] = useState<string>("");
