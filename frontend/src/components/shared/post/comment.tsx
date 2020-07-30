@@ -12,7 +12,7 @@ export const Comment: React.FC<IComment> = ({ owner, text }) => {
       <List.Header as="h3" floated="left">
         <Icon name="comment outline" /> {owner}
       </List.Header>
-      <p style={{ fontSize: "2vh" }}>{text}</p>
+      <p style={{ fontSize: "large" }}>{text}</p>
       <br />
     </List.Content>
   );
