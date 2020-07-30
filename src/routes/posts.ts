@@ -134,4 +134,16 @@ router
     });
   });
 
+router.route("/following").get(verifyToken, (req: Request, res: Response) => {
+  User.findById(req.body.uid)
+    .then((user: IUser | null) => {
+      if (user) {
+        Post.find({ owner: { $in: user.following } })
+          .then((posts: IPost[]) => res.json(posts))
+          .catch((err: Error) => res.status(400).json(`Error: ${err}`));
+      }
+    })
+    .catch((err: Error) => res.status(400).json(`Error: ${err}`));
+});
+
 export default router;
