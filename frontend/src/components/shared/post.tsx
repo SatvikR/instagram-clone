@@ -9,6 +9,9 @@ import {
   Input,
   List,
   Image,
+  Modal,
+  Container,
+  Icon,
 } from "semantic-ui-react";
 import { Comment } from "./post/comment";
 
@@ -149,7 +152,29 @@ export const Post: React.FC<IProps> = ({
       <Header as="h3" dividing>
         {title}
       </Header>
-      <Image src={image} size="medium" bordered centered />
+      <Modal trigger={<Image src={image} size="medium" bordered centered />}>
+        <Modal.Header style={{ paddingLeft: "12%" }}>{title}</Modal.Header>
+        <Modal.Content>
+          <Image src={image} size="huge" bordered centered />
+          <p style={{ textAlign: "center" }}>
+            <i>Click outside to close</i>
+          </p>
+        </Modal.Content>
+        <Modal.Description>
+          <Container text>
+            <Header dividing>Posted By: {username} </Header>
+            <p style={{ fontSize: "large" }}>
+              <Icon name="thumbs up outline" /> Likes: {currLikes}
+            </p>
+            <br />
+            <br />
+            <br />
+          </Container>
+        </Modal.Description>
+      </Modal>
+      <p>
+        <i>Click to enlarge</i>
+      </p>
       <Header as="h4" dividing>
         Posted by: {username}
       </Header>
