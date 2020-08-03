@@ -51,6 +51,7 @@ const Signup: React.FC = () => {
         </Header>
         <Form size="large" onSubmit={handleSubmit}>
           <Segment stacked>
+            <label style={{ float: "left" }}>Username</label>
             <Form.Input
               fluid
               icon="user"
@@ -59,6 +60,7 @@ const Signup: React.FC = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
+            <label style={{ float: "left" }}>Password</label>
             <Form.Input
               fluid
               icon="lock"
@@ -68,6 +70,7 @@ const Signup: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            <label style={{ float: "left" }}>Repeat Password</label>
             <Form.Input
               fluid
               icon="lock"
@@ -83,7 +86,7 @@ const Signup: React.FC = () => {
           </Segment>
         </Form>
         <Message>
-          Don't have an account? <Link to="/signup">Sign Up</Link>
+          Already have an account? <Link to="/login">Login</Link>
         </Message>
       </Grid.Column>
     </Grid>

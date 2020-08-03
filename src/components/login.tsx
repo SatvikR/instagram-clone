@@ -97,6 +97,7 @@ const Login: React.FC = () => {
           </Header>
           <Form size="large" onSubmit={handleSubmit}>
             <Segment stacked>
+              <label style={{ float: "left" }}>Username</label>
               <Form.Input
                 fluid
                 icon="user"
@@ -105,6 +106,7 @@ const Login: React.FC = () => {
                 value={username}
                 onChange={handleUsername}
               />
+              <label style={{ float: "left" }}>Password</label>
               <Form.Input
                 fluid
                 icon="lock"
